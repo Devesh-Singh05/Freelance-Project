@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURUM — Fine Dining</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & ROOT
+   ═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-deep: #080808;
+  --bg-surface: #111111;
+  --bg-elevated: #1A1816;
+  --bg-card: #15130f;
+  --gold: #C8A96E;
+  --gold-light: #DCC9A0;
+  --gold-dim: #8A7B5A;
+  --cream: #F2EDE4;
+  --cream-dim: #B8B0A2;
+  --warm-gray: #6B6560;
+  --warm-dark: #2A2520;
+  --red-wine: #722F37;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Cormorant Garamond', Garamond, serif;
+  --font-ui: 'Outfit', system-ui, sans-serif;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --space-2xl: 10rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-dim) var(--bg-deep);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--cream);
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--bg-deep);
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ═══════════════════════════════════════════
+   GRAIN OVERLAY
+   ═══════════════════════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0.85) 0%, rgba(8, 8, 8, 0) 100%);
+  transition: all 0.6s var(--ease-out-expo);
+}
+
+.nav--scrolled {
+  background: rgba(8, 8, 8, 1);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  padding: 1rem 3rem;
+  border-bottom: 1px solid rgba(200, 169, 110, 0.08);
+}
+
+.nav__logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  position: relative;
+}
+
+.nav__logo span {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 0.55em;
+  display: block;
+  letter-spacing: 0.35em;
+  color: var(--cream-dim);
+  margin-top: -2px;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav__links a {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color 0.4s ease;
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.4s var(--ease-out-expo);
+}
+
+.nav__links a:hover { color: var(--cream); }
+.nav__links a:hover::after { width: 100%; }
+
+.nav__reserve {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold-dim);
+  padding: 0.65rem 1.8rem;
+  transition: all 0.4s ease;
+}
+
+.nav__reserve:hover {
+  background: var(--gold);
+  color: var(--bg-deep);
+}
+
+/* Hamburger */
+.nav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  z-index: 1001;
+}
+
+.nav__hamburger span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--cream);
+  transition: all 0.4s var(--ease-out-expo);
+  transform-origin: center;
+}
+
+.nav__hamburger--active span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+.nav__hamburger--active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav__hamburger--active span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* Mobile Menu */
+.nav__mobile {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.97);
+  backdrop-filter: blur(40px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.nav__mobile--open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav__mobile a {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--cream);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.nav__mobile--open a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav__mobile--open a:nth-child(1) { transition-delay: 0.1s; }
+.nav__mobile--open a:nth-child(2) { transition-delay: 0.15s; }
+.nav__mobile--open a:nth-child(3) { transition-delay: 0.2s; }
+.nav__mobile--open a:nth-child(4) { transition-delay: 0.25s; }
+.nav__mobile--open a:nth-child(5) { transition-delay: 0.3s; }
+.nav__mobile--open a:nth-child(6) { transition-delay: 0.35s; }
+
+/* ═══════════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 100px;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(200, 169, 110, 0.06), transparent 70%),
+    radial-gradient(ellipse 50% 80% at 80% 60%, rgba(114, 47, 55, 0.05), transparent 60%),
+    linear-gradient(180deg, var(--bg-deep) 0%, #0d0b09 50%, var(--bg-deep) 100%);
+}
+
+.hero__line-left,
+.hero__line-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(200, 169, 110, 0.1) 30%, rgba(200, 169, 110, 0.1) 70%, transparent);
+}
+.hero__line-left { left: 8%; }
+.hero__line-right { right: 8%; }
+
+.hero__content {
+  position: relative;
+  text-align: center;
+  max-width: 900px;
+  padding: 0 2rem;
+}
+
+.hero__tagline {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.hero__tagline::before,
+.hero__tagline::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  margin-bottom: var(--space-sm);
+}
+
+.hero__title em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.hero__subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 300;
+  color: var(--cream-dim);
+  max-width: 520px;
+  margin: 0 auto var(--space-lg);
+  line-height: 1.8;
+}
+
+.hero__cta-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bg-deep);
+  background: var(--gold);
+  padding: 1rem 2.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200, 169, 110, 0.25); }
+
+.btn-ghost {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-dim);
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--warm-gray);
+  transition: all 0.4s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hero__scroll span {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+
+.hero__scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--gold-dim), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ═══════════════════════════════════════════
+   SECTION UTILITIES
+   ═══════════════════════════════════════════ */
+.section {
+  padding: var(--space-2xl) 3rem;
+  position: relative;
+}
+
+.section--surface { background: var(--bg-surface); }
+.section--elevated { background: var(--bg-elevated); }
+
+.section__label {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: var(--space-sm);
+}
+
+.section__heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--cream);
+  margin-bottom: var(--space-md);
+}
+
+.section__heading em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.section__desc {
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  max-width: 540px;
+  line-height: 1.9;
+}
+
+.divider {
+  width: 60px;
+  height: 1px;
+  background: var(--gold-dim);
+  margin: var(--space-md) 0;
+}
+
+/* Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+}
+
+.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ═══════════════════════════════════════════
+   ABOUT
+   ═══════════════════════════════════════════ */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.about__image-wrap {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.about__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--bg-elevated);
+  background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+}
+
+.about__image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(200, 169, 110, 0.1);
+  pointer-events: none;
+}
+
+.about__accent {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 80px;
+  height: 80px;
+  border-top: 1px solid var(--gold-dim);
+  border-left: 1px solid var(--gold-dim);
+}
+
+.about__text { padding-left: var(--space-md); }
+
+.about__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(200, 169, 110, 0.1);
+}
+
+.stat__number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat__label {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-top: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════
+   MENU HIGHLIGHTS
+   ═══════════════════════════════════════════ */
+.menu-section {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.menu-section__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.menu-section__header .section__desc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.menu-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: var(--space-lg);
+}
+
+.menu-tab {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid transparent;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.menu-tab:hover,
+.menu-tab--active {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(200, 169, 110, 0.06);
+}
+
+.menu-item {
+  background: var(--bg-deep);
+  padding: var(--space-md) var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: background 0.4s ease;
+}
+
+.menu-item:hover {
+  background: var(--bg-elevated);
+}
+
+.menu-item__info { flex: 1; }
+
+.menu-item__name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 0.4rem;
+}
+
+.menu-item__desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  line-height: 1.6;
+}
+
+.menu-item__price {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.menu-item__dot-line {
+  flex: 1;
+  border-bottom: 1px dotted rgba(200, 169, 110, 0.15);
+  min-width: 40px;
+  align-self: center;
+  margin: 0 0.75rem;
+}
+
+/* ═══════════════════════════════════════════
+   CHEF'S SPECIALS (FEATURED)
+   ═══════════════════════════════════════════ */
+.specials {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.specials__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.specials__header .section__desc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.specials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.special-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 169, 110, 0.06);
+  transition: all 0.5s var(--ease-out-expo);
+}
+
+.special-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(200, 169, 110, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.special-card__image {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.special-card__image div {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+.special-card:hover .special-card__image div {
+  transform: scale(1.05);
+}
+
+/* Placeholder dish images as warm gradients */
+.special-card:nth-child(1) .special-card__image div {
+  background: url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+}
+.special-card:nth-child(2) .special-card__image div {
+  background: url('https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+}
+.special-card:nth-child(3) .special-card__image div {
+  background: url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80') center/cover no-repeat;
+}
+
+.special-card__badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-family: var(--font-ui);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bg-deep);
+  background: var(--gold);
+  padding: 0.35rem 0.9rem;
+}
+
+.special-card__body {
+  padding: 1.5rem;
+}
+
+.special-card__title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.special-card__text {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.special-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.special-card__price {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+
+.special-card__tag {
+  font-family: var(--font-ui);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  border: 1px solid rgba(200, 169, 110, 0.12);
+  padding: 0.3rem 0.7rem;
+}
+
+/* ═══════════════════════════════════════════
+   PARALLAX QUOTE
+   ═══════════════════════════════════════════ */
+.quote-break {
+  padding: var(--space-2xl) 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-break__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(114, 47, 55, 0.08), transparent 50%),
+    radial-gradient(circle at 70% 50%, rgba(200, 169, 110, 0.05), transparent 50%),
+    var(--bg-deep);
+}
+
+.quote-break__text {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--cream);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.quote-break__text::before {
+  content: '\201C';
+  display: block;
+  font-size: 5rem;
+  color: var(--gold-dim);
+  line-height: 0.5;
+  margin-bottom: 1rem;
+}
+
+.quote-break__author {
+  position: relative;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: var(--space-md);
+}
+
+/* ═══════════════════════════════════════════
+   TESTIMONIALS
+   ═══════════════════════════════════════════ */
+.testimonials {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonials__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.testimonials__header .section__desc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.testimonial {
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 169, 110, 0.06);
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.4s ease;
+}
+
+.testimonial:hover {
+  border-color: rgba(200, 169, 110, 0.15);
+}
+
+.testimonial__stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 1.25rem;
+}
+
+.testimonial__star {
+  width: 14px;
+  height: 14px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.testimonial__text {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--cream-dim);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial__author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.testimonial__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dim), var(--warm-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--cream);
+}
+
+.testimonial__name {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.testimonial__role {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  color: var(--warm-gray);
+  letter-spacing: 0.1em;
+}
+
+/* ═══════════════════════════════════════════
+   GALLERY
+   ═══════════════════════════════════════════ */
+.gallery {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.gallery__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: 0.75rem;
+}
+
+.gallery-item {
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.3);
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.gallery-item:hover::after { opacity: 0; }
+
+.gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+
+.gallery-item div {
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  transition: transform 0.7s var(--ease-out-expo);
+}
+
+.gallery-item:hover div { transform: scale(1.05); }
+
+/* Placeholder gallery images */
+.gallery-item:nth-child(1) div { min-height: 420px; background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat; }
+.gallery-item:nth-child(2) div { background: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=600&q=80') center/cover no-repeat; }
+.gallery-item:nth-child(3) div { background: url('https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80') center/cover no-repeat; }
+.gallery-item:nth-child(4) div { background: url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80') center/cover no-repeat; }
+.gallery-item:nth-child(5) div { background: url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=600&q=80') center/cover no-repeat; }
+.gallery-item:nth-child(6) { display: none; }
+
+/* ═══════════════════════════════════════════
+   RESERVATION / CONTACT
+   ═══════════════════════════════════════════ */
+.contact {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+.contact__info { padding-right: var(--space-md); }
+
+.contact__details {
+  margin-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.contact__detail-item {
+  display: flex;
+  gap: 1rem;
+}
+
+.contact__detail-icon {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(200, 169, 110, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--gold);
+  font-size: 1rem;
+}
+
+.contact__detail-text h4 {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.contact__detail-text p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  line-height: 1.6;
+}
+
+.contact__form-wrap {
+  background: var(--bg-card);
+  border: 1px solid rgba(200, 169, 110, 0.08);
+  padding: var(--space-lg);
+}
+
+.contact__form-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: var(--space-md);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group { margin-bottom: 1rem; }
+
+.form-group label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(200, 169, 110, 0.12);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 0.85rem 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--gold);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--warm-gray);
+}
+
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6560' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+}
+
+.form-group select option {
+  background: var(--bg-deep);
+  color: var(--cream);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contact__form-wrap .btn-primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════
+   MAP PLACEHOLDER
+   ═══════════════════════════════════════════ */
+.map-section {
+  height: 350px;
+  background:
+    linear-gradient(180deg, var(--bg-deep), rgba(8,8,8,0.7)),
+    linear-gradient(135deg, #1a1816, #0d0b09, #15120f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-top: 1px solid rgba(200, 169, 110, 0.06);
+  border-bottom: 1px solid rgba(200, 169, 110, 0.06);
+}
+
+.map-section__placeholder {
+  text-align: center;
+}
+
+.map-section__placeholder svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--gold-dim);
+  fill: none;
+  stroke-width: 1.5;
+  margin-bottom: 1rem;
+}
+
+.map-section__placeholder p {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--warm-gray);
+}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════ */
+.footer {
+  background: var(--bg-surface);
+  border-top: 1px solid rgba(200, 169, 110, 0.06);
+}
+
+.footer__main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) 3rem var(--space-lg);
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: var(--space-lg);
+}
+
+.footer__brand .nav__logo {
+  margin-bottom: 1.25rem;
+}
+
+.footer__brand-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  line-height: 1.8;
+  max-width: 300px;
+}
+
+.footer__social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.footer__social-link {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(200, 169, 110, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.footer__social-link:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.footer__social-link svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--cream-dim);
+  transition: fill 0.3s ease;
+}
+
+.footer__social-link:hover svg { fill: var(--bg-deep); }
+
+.footer__col-title {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.footer__links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.footer__links a {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  transition: color 0.3s ease;
+}
+
+.footer__links a:hover { color: var(--gold); }
+
+.footer__hours-item {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  margin-bottom: 0.5rem;
+}
+
+.footer__hours-item span:first-child { color: var(--cream); }
+
+.footer__newsletter p {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--cream-dim);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.footer__newsletter-form {
+  display: flex;
+  gap: 0;
+}
+
+.footer__newsletter-form input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(200, 169, 110, 0.12);
+  border-right: none;
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.footer__newsletter-form input:focus { border-color: var(--gold); }
+.footer__newsletter-form input::placeholder { color: var(--warm-gray); }
+
+.footer__newsletter-btn {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bg-deep);
+  background: var(--gold);
+  padding: 0 1.5rem;
+  border: 1px solid var(--gold);
+  transition: all 0.3s ease;
+}
+
+.footer__newsletter-btn:hover {
+  background: var(--gold-light);
+}
+
+.footer__bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem;
+  border-top: 1px solid rgba(200, 169, 110, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer__copy {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: var(--warm-gray);
+  letter-spacing: 0.05em;
+}
+
+.footer__bottom-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.footer__bottom-links a {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  color: var(--warm-gray);
+  letter-spacing: 0.05em;
+  transition: color 0.3s ease;
+}
+
+.footer__bottom-links a:hover { color: var(--cream); }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .section { padding: var(--space-xl) 2rem; }
+
+  .about { grid-template-columns: 1fr; gap: var(--space-lg); }
+  .about__text { padding-left: 0; }
+
+  .specials-grid { grid-template-columns: 1fr 1fr; }
+  .specials-grid .special-card:nth-child(3) { grid-column: span 2; max-width: 50%; margin: 0 auto; }
+
+  .testimonials-grid { grid-template-columns: 1fr 1fr; }
+  .testimonials-grid .testimonial:nth-child(3) { grid-column: span 2; max-width: 50%; margin: 0 auto; }
+
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+  .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+  .gallery-item:nth-child(1) div { min-height: 280px; }
+
+  .contact { grid-template-columns: 1fr; gap: var(--space-lg); }
+  .contact__info { padding-right: 0; }
+
+  .footer__main { grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 1rem 1.5rem; }
+  .nav--scrolled { padding: 0.75rem 1.5rem; }
+  .nav__links { display: none; }
+  .nav__reserve { display: none; }
+  .nav__hamburger { display: flex; }
+
+  .section { padding: var(--space-lg) 1.25rem; }
+  .quote-break { padding: var(--space-lg) 1.25rem; }
+
+  .hero__tagline { font-size: 0.6rem; gap: 1rem; }
+  .hero__tagline::before, .hero__tagline::after { width: 25px; }
+
+  .about__stats { grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); }
+  .stat__number { font-size: 1.8rem; }
+
+  .menu-grid { grid-template-columns: 1fr; }
+  .menu-tabs { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .menu-item { padding: 1.25rem; }
+
+  .specials-grid { grid-template-columns: 1fr; }
+  .specials-grid .special-card:nth-child(3) { grid-column: span 1; max-width: 100%; }
+
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .testimonials-grid .testimonial:nth-child(3) { grid-column: span 1; max-width: 100%; }
+
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item:nth-child(1) { grid-column: span 2; }
+  .gallery-item:nth-child(1) div { min-height: 220px; }
+
+  .form-row { grid-template-columns: 1fr; }
+  .contact__form-wrap { padding: var(--space-md); }
+
+  .map-section { height: 250px; }
+
+  .footer__main { grid-template-columns: 1fr; gap: var(--space-md); padding: var(--space-lg) 1.5rem var(--space-md); }
+  .footer__bottom { padding: 1.25rem 1.5rem; flex-direction: column; text-align: center; }
+  .footer__bottom-links { gap: 1.25rem; }
+}
+
+@media (max-width: 480px) {
+  .hero__subtitle { font-size: 1rem; }
+  .hero__cta-group { flex-direction: column; }
+  .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+  .about__stats { grid-template-columns: 1fr; gap: 1.25rem; text-align: center; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item:nth-child(1) { grid-column: span 1; }
+  .footer__newsletter-form { flex-direction: column; }
+  .footer__newsletter-form input { border-right: 1px solid rgba(200, 169, 110, 0.12); }
+  .footer__newsletter-btn { padding: 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
+<nav class="nav" id="nav">
+  <a href="#" class="nav__logo">
+    AURUM
+    <span>Fine Dining</span>
+  </a>
+  <ul class="nav__links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#specials">Specials</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav__reserve">Reserve a Table</a>
+
+  <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="nav__mobile" id="mobileMenu">
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#menu" class="mobile-link">Menu</a>
+  <a href="#specials" class="mobile-link">Specials</a>
+  <a href="#gallery" class="mobile-link">Gallery</a>
+  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="#contact" class="mobile-link" style="color: var(--gold);">Reserve a Table</a>
+</div>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__line-left"></div>
+  <div class="hero__line-right"></div>
+
+  <div class="hero__content">
+    <p class="hero__tagline reveal">Est. 2018</p>
+    <h1 class="hero__title reveal reveal-delay-1">Where Every<br>Dish Tells <em>a Story</em></h1>
+    <p class="hero__subtitle reveal reveal-delay-2">
+      An intimate culinary journey through seasonal flavors, artisanal ingredients, and the timeless art of fine dining.
+    </p>
+    <div class="hero__cta-group reveal reveal-delay-3">
+      <a href="#contact" class="btn-primary">Reserve a Table</a>
+      <a href="#menu" class="btn-ghost">Explore the Menu</a>
+    </div>
+  </div>
+
+  <div class="hero__scroll">
+    <span>Scroll</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section class="section" id="about">
+  <div class="about">
+    <div class="about__image-wrap reveal">
+      <div class="about__image"></div>
+      <div class="about__accent"></div>
+    </div>
+    <div class="about__text">
+      <p class="section__label reveal">Our Story</p>
+      <h2 class="section__heading reveal reveal-delay-1">A Tradition of <em>Excellence</em></h2>
+      <div class="divider reveal reveal-delay-2"></div>
+      <p class="section__desc reveal reveal-delay-2">
+        Nestled in the heart of the city, Aurum was born from a singular vision — to create a space where culinary artistry meets heartfelt hospitality. Every plate that leaves our kitchen carries the dedication of our team and the spirit of the seasons.
+      </p>
+      <p class="section__desc reveal reveal-delay-3" style="margin-top: 1rem;">
+        Our chef curates each menu with locally sourced ingredients, honoring both tradition and innovation. From the first amuse-bouche to the final petit four, your experience is crafted with intention.
+      </p>
+      <div class="about__stats reveal reveal-delay-4">
+        <div>
+          <div class="stat__number">8</div>
+          <div class="stat__label">Years of Excellence</div>
+        </div>
+        <div>
+          <div class="stat__number">24</div>
+          <div class="stat__label">Awards Won</div>
+        </div>
+        <div>
+          <div class="stat__number">15K</div>
+          <div class="stat__label">Happy Guests</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MENU HIGHLIGHTS ═══════════════ -->
+<section class="section section--surface" id="menu">
+  <div class="menu-section">
+    <div class="menu-section__header">
+      <p class="section__label reveal">The Menu</p>
+      <h2 class="section__heading reveal reveal-delay-1">Curated <em>Selections</em></h2>
+      <p class="section__desc reveal reveal-delay-2">
+        A glimpse into our seasonal offerings, thoughtfully composed to celebrate the finest ingredients.
+      </p>
+    </div>
+
+    <div class="menu-tabs reveal">
+      <button class="menu-tab menu-tab--active">Starters</button>
+      <button class="menu-tab">Mains</button>
+      <button class="menu-tab">Desserts</button>
+      <button class="menu-tab">Drinks</button>
+    </div>
+
+    <div class="menu-grid reveal">
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Seared Foie Gras</div>
+          <div class="menu-item__desc">Caramelized fig, brioche crumble, aged balsamic reduction</div>
+        </div>
+        <span class="menu-item__dot-line"></span>
+        <div class="menu-item__price">$32</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Tuna Tartare</div>
+          <div class="menu-item__desc">Avocado mousse, yuzu gel, crispy shallots, sesame tuile</div>
+        </div>
+        <span class="menu-item__dot-line"></span>
+        <div class="menu-item__price">$28</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Burrata & Heirloom Tomato</div>
+          <div class="menu-item__desc">Basil oil, pine nuts, prosciutto di Parma, micro greens</div>
+        </div>
+        <span class="menu-item__dot-line"></span>
+        <div class="menu-item__price">$24</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Lobster Bisque</div>
+          <div class="menu-item__desc">Cognac cream, chive oil, sourdough crouton</div>
+        </div>
+        <span class="menu-item__dot-line"></span>
+        <div class="menu-item__price">$26</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Wagyu Carpaccio</div>
+          <div class="menu-item__desc">Truffle aioli, arugula, parmesan shavings, caper berries</div>
+        </div>
+        <span class="menu-item__dot-line"></span>
+        <div class="menu-item__price">$36</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-item__info">
+          <div class="menu-item__name">Wild Mushroom Velouté</div>
+          <div class="menu-item__desc">Porcini foam, truffle oil, herb croutons</div>
+        </div>
+        <span class="menu-item__dot-line"></span>
+        <div class="menu-item__price">$22</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ QUOTE BREAK ═══════════════ -->
+<section class="quote-break">
+  <div class="quote-break__bg"></div>
+  <div class="quote-break__text reveal">
+    Cooking is an art, but all art requires knowing something about the techniques and materials.
+  </div>
+  <p class="quote-break__author reveal reveal-delay-1">— Chef Laurent Moreau</p>
+</section>
+
+<!-- ═══════════════ CHEF'S SPECIALS ═══════════════ -->
+<section class="section" id="specials">
+  <div class="specials">
+    <div class="specials__header">
+      <p class="section__label reveal">Chef's Selection</p>
+      <h2 class="section__heading reveal reveal-delay-1">Signature <em>Creations</em></h2>
+      <p class="section__desc reveal reveal-delay-2">
+        Our chef's most celebrated dishes — each one a masterpiece of flavor, texture, and presentation.
+      </p>
+    </div>
+
+    <div class="specials-grid">
+      <div class="special-card reveal">
+        <div class="special-card__image"><div></div></div>
+        <span class="special-card__badge">Chef's Pick</span>
+        <div class="special-card__body">
+          <h3 class="special-card__title">Dry-Aged Tomahawk</h3>
+          <p class="special-card__text">
+            45-day aged prime beef, bone marrow butter, roasted garlic jus, seasonal root vegetables.
+          </p>
+          <div class="special-card__footer">
+            <span class="special-card__price">$89</span>
+            <span class="special-card__tag">Signature</span>
+          </div>
+        </div>
+      </div>
+      <div class="special-card reveal reveal-delay-1">
+        <div class="special-card__image"><div></div></div>
+        <div class="special-card__body">
+          <h3 class="special-card__title">Pan-Seared Dover Sole</h3>
+          <p class="special-card__text">
+            Brown butter, capers, lemon confit, haricots verts, crushed new potatoes.
+          </p>
+          <div class="special-card__footer">
+            <span class="special-card__price">$72</span>
+            <span class="special-card__tag">Seasonal</span>
+          </div>
+        </div>
+      </div>
+      <div class="special-card reveal reveal-delay-2">
+        <div class="special-card__image"><div></div></div>
+        <span class="special-card__badge">New</span>
+        <div class="special-card__body">
+          <h3 class="special-card__title">Black Truffle Risotto</h3>
+          <p class="special-card__text">
+            Carnaroli rice, aged Parmigiano-Reggiano, fresh Périgord truffle, garden herbs.
+          </p>
+          <div class="special-card__footer">
+            <span class="special-card__price">$64</span>
+            <span class="special-card__tag">Vegetarian</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+<section class="section section--surface" id="testimonials">
+  <div class="testimonials">
+    <div class="testimonials__header">
+      <p class="section__label reveal">Guest Voices</p>
+      <h2 class="section__heading reveal reveal-delay-1">What They <em>Say</em></h2>
+      <p class="section__desc reveal reveal-delay-2">
+        Words from those who have shared our table and become part of our story.
+      </p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial reveal">
+        <div class="testimonial__stars">
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+        </div>
+        <p class="testimonial__text">
+          "An extraordinary evening from start to finish. The tasting menu was a revelation — each course more inspired than the last. The staff anticipated our every need without being intrusive."
+        </p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar">MR</div>
+          <div>
+            <div class="testimonial__name">Margaret R.</div>
+            <div class="testimonial__role">Food Critic, The Daily Review</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-1">
+        <div class="testimonial__stars">
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+        </div>
+        <p class="testimonial__text">
+          "We celebrated our anniversary here and it was nothing short of magical. The ambiance, the sommelier's impeccable pairings, and of course, that truffle risotto — unforgettable."
+        </p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar">JD</div>
+          <div>
+            <div class="testimonial__name">James D.</div>
+            <div class="testimonial__role">Loyal Guest Since 2019</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-2">
+        <div class="testimonial__stars">
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+          <div class="testimonial__star"></div>
+        </div>
+        <p class="testimonial__text">
+          "I've dined at restaurants across Europe and Asia, and Aurum holds its own among the finest. The attention to detail is remarkable. Every visit feels like the first time."
+        </p>
+        <div class="testimonial__author">
+          <div class="testimonial__avatar">SL</div>
+          <div>
+            <div class="testimonial__name">Sophie L.</div>
+            <div class="testimonial__role">Travel & Lifestyle Blogger</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ GALLERY ═══════════════ -->
+<section class="section" id="gallery">
+  <div class="gallery">
+    <div class="gallery__header">
+      <p class="section__label reveal">Visual Journey</p>
+      <h2 class="section__heading reveal reveal-delay-1">The <em>Experience</em></h2>
+    </div>
+
+    <div class="gallery-grid reveal">
+      <div class="gallery-item"><div></div></div>
+      <div class="gallery-item"><div></div></div>
+      <div class="gallery-item"><div></div></div>
+      <div class="gallery-item"><div></div></div>
+      <div class="gallery-item"><div></div></div>
+      <div class="gallery-item"><div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT / RESERVATION ═══════════════ -->
+<section class="section section--surface" id="contact">
+  <div class="contact">
+    <div class="contact__info">
+      <p class="section__label reveal">Get in Touch</p>
+      <h2 class="section__heading reveal reveal-delay-1">Reserve Your <em>Experience</em></h2>
+      <div class="divider reveal reveal-delay-2"></div>
+      <p class="section__desc reveal reveal-delay-2">
+        Whether it's an intimate dinner for two or a celebration with loved ones, we'd be honored to welcome you to our table.
+      </p>
+
+      <div class="contact__details">
+        <div class="contact__detail-item reveal reveal-delay-3">
+          <div class="contact__detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact__detail-text">
+            <h4>Location</h4>
+            <p>14, Linking Road, Bandra West<br>Mumbai, Maharashtra 400050</p>
+          </div>
+        </div>
+        <div class="contact__detail-item reveal reveal-delay-3">
+          <div class="contact__detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div class="contact__detail-text">
+            <h4>Reservations</h4>
+            <p>+91 22 2640 7890<br>reservations@aurum.in</p>
+          </div>
+        </div>
+        <div class="contact__detail-item reveal reveal-delay-4">
+          <div class="contact__detail-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="contact__detail-text">
+            <h4>Hours</h4>
+            <p>Tue – Sat: 6:00 PM – 11:00 PM<br>Sun Brunch: 11:00 AM – 3:00 PM<br>Monday: Closed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact__form-wrap reveal reveal-delay-2">
+      <h3 class="contact__form-title">Make a Reservation</h3>
+      <form id="reservationForm" onsubmit="return false;">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="+91 ...">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date">
+          </div>
+          <div class="form-group">
+            <label for="time">Time</label>
+            <select id="time">
+              <option value="">Select time</option>
+              <option>6:00 PM</option>
+              <option>6:30 PM</option>
+              <option>7:00 PM</option>
+              <option>7:30 PM</option>
+              <option>8:00 PM</option>
+              <option>8:30 PM</option>
+              <option>9:00 PM</option>
+              <option>9:30 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="guests">Number of Guests</label>
+          <select id="guests">
+            <option value="">Select guests</option>
+            <option>1 Guest</option>
+            <option>2 Guests</option>
+            <option>3 Guests</option>
+            <option>4 Guests</option>
+            <option>5 Guests</option>
+            <option>6 Guests</option>
+            <option>7+ Guests</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="notes">Special Requests</label>
+          <textarea id="notes" placeholder="Allergies, celebrations, seating preferences..."></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Confirm Reservation</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MAP ═══════════════ -->
+<div class="map-section">
+  <div class="map-section__placeholder">
+    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <p>Interactive Map</p>
+  </div>
+</div>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer">
+  <div class="footer__main">
+    <div class="footer__brand">
+      <div class="nav__logo">
+        AURUM
+        <span>Fine Dining</span>
+      </div>
+      <p class="footer__brand-text">
+        A celebration of culinary artistry, seasonal ingredients, and unforgettable moments shared around the table.
+      </p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-link" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="#" class="footer__social-link" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="#" class="footer__social-link" aria-label="Twitter">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__col-title">Navigate</h4>
+      <ul class="footer__links">
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#menu">The Menu</a></li>
+        <li><a href="#specials">Specials</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Reservations</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__col-title">Hours</h4>
+      <div class="footer__hours-item"><span>Tuesday</span><span>6 – 11 PM</span></div>
+      <div class="footer__hours-item"><span>Wednesday</span><span>6 – 11 PM</span></div>
+      <div class="footer__hours-item"><span>Thursday</span><span>6 – 11 PM</span></div>
+      <div class="footer__hours-item"><span>Friday</span><span>6 – 12 AM</span></div>
+      <div class="footer__hours-item"><span>Saturday</span><span>6 – 12 AM</span></div>
+      <div class="footer__hours-item"><span>Sunday</span><span>11 AM – 3 PM</span></div>
+      <div class="footer__hours-item" style="color: var(--warm-gray);"><span>Monday</span><span>Closed</span></div>
+    </div>
+
+    <div class="footer__col">
+      <h4 class="footer__col-title">Newsletter</h4>
+      <p class="footer__newsletter" style="font-family: var(--font-body); font-size: 0.95rem; font-weight: 300; color: var(--cream-dim); line-height: 1.7; margin-bottom: 1.25rem;">
+        Join our mailing list for seasonal menu updates, exclusive events, and special offers.
+      </p>
+      <div class="footer__newsletter-form">
+        <input type="email" placeholder="Your email address">
+        <button class="footer__newsletter-btn">Join</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__copy">&copy; 2026 Aurum Fine Dining. All rights reserved.</p>
+    <div class="footer__bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+// ── Sticky Nav ──
+const nav = document.getElementById('nav');
+let lastScroll = 0;
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.scrollY;
+  if (currentScroll > 80) {
+    nav.classList.add('nav--scrolled');
+  } else {
+    nav.classList.remove('nav--scrolled');
+  }
+  lastScroll = currentScroll;
+}, { passive: true });
+
+// ── Mobile Menu ──
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('nav__hamburger--active');
+  mobileMenu.classList.toggle('nav__mobile--open');
+  document.body.style.overflow = mobileMenu.classList.contains('nav__mobile--open') ? 'hidden' : '';
+});
+
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('nav__hamburger--active');
+    mobileMenu.classList.remove('nav__mobile--open');
+    document.body.style.overflow = '';
+  });
+});
+
+// ── Scroll Reveal ──
+const revealElements = document.querySelectorAll('.reveal');
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('reveal--visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.12,
+  rootMargin: '0px 0px -40px 0px'
+});
+
+revealElements.forEach(el => revealObserver.observe(el));
+
+// ── Menu Tabs (visual toggle) ──
+document.querySelectorAll('.menu-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('menu-tab--active'));
+    tab.classList.add('menu-tab--active');
+  });
+});
+
+// ── Smooth anchor scroll for all internal links ──
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

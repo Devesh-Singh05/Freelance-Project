@@ -1,0 +1,9 @@
+{
+  "name": "aurum-fine-dining",
+  "version": "1.0.0",
+  "description": "AURUM — Fine Dining Restaurant Website",
+  "scripts": {
+    "dev": "npx serve public",
+    "build": "echo 'Static site — no build needed'"
+  }
+}
